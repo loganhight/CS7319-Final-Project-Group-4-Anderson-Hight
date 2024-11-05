@@ -1,5 +1,6 @@
+// src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import './Dashboard.css';
 
@@ -10,30 +11,32 @@ const Dashboard = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'transactions'), (snapshot) => {
+    const fetchTransactions = async () => {
+      const transactionsCollection = collection(db, 'transactions');
+      const transactionsSnapshot = await getDocs(transactionsCollection);
+      const transactions = transactionsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      // Calculate totals
       let income = 0;
       let expenses = 0;
-      const transactions = [];
-
-      snapshot.docs.forEach(doc => {
-        const data = doc.data();
-        const amount = parseFloat(data.amount);
-        transactions.push({ ...data, id: doc.id });
-
-        if (amount > 0) {
-          income += amount;
+      transactions.forEach(transaction => {
+        if (transaction.amount > 0) {
+          income += transaction.amount;
         } else {
-          expenses += amount;
+          expenses += transaction.amount;
         }
       });
 
       setTotalIncome(income);
       setTotalExpenses(Math.abs(expenses));
       setNetBalance(income + expenses);
-      setRecentTransactions(transactions.slice(0, 3)); // Show the last 3 transactions
-    });
+      setRecentTransactions(transactions.slice(0, 3));
+    };
 
-    return () => unsubscribe(); // Cleanup listener on unmount
+    fetchTransactions();
   }, []);
 
   return (

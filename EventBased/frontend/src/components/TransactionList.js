@@ -1,5 +1,6 @@
+// src/components/TransactionList.js
 import React, { useEffect, useState } from 'react';
-import { collection, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase';
 import './TransactionList.css';
 
@@ -7,20 +8,27 @@ const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'transactions'), (snapshot) => {
-      const transactionsList = snapshot.docs.map(doc => ({
+    const fetchTransactions = async () => {
+      const transactionsCollection = collection(db, 'transactions');
+      const transactionsSnapshot = await getDocs(transactionsCollection);
+      const transactionsData = transactionsSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
+      setTransactions(transactionsData);
+    };
 
-      setTransactions(transactionsList);
-    });
-
-    return () => unsubscribe();
+    fetchTransactions();
   }, []);
 
   const handleDelete = async (id) => {
-    await deleteDoc(doc(db, 'transactions', id));
+    try {
+      await deleteDoc(doc(db, 'transactions', id));
+      setTransactions(transactions.filter(trans => trans.id !== id));
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+      alert('Failed to delete transaction. Please try again.');
+    }
   };
 
   return (
@@ -39,7 +47,6 @@ const TransactionList = () => {
             <div>{trans.amount > 0 ? `+${trans.amount}` : trans.amount}</div>
             <div>{trans.notes}</div>
             <div>
-              <button className="edit-button">Edit</button>
               <button className="delete-button" onClick={() => handleDelete(trans.id)}>Delete</button>
             </div>
           </div>
