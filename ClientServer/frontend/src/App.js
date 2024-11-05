@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import TransactionForm from './components/TransactionForm';
@@ -7,11 +8,10 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h1>Personal Finance Management App</h1>
         <nav>
           <Link to="/">Dashboard</Link> | 
           <Link to="/add">Add Transaction</Link> | 
-          <Link to="/list">Transaction List</Link>
+          <Link to="/list">View Transactions</Link>
         </nav>
         <Routes>
           <Route path="/" element={<Dashboard />} />

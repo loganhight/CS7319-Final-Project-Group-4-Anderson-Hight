@@ -7,17 +7,25 @@ const TransactionForm = () => {
   const [amount, setAmount] = useState('');
   const [notes, setNotes] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newTransaction = { date, amount: parseFloat(amount), notes };
-    axios.post('http://127.0.0.1:5000/api/transactions', newTransaction)
-      .then(response => {
-        setDate('');
-        setAmount('');
-        setNotes('');
-      })
-      .catch(error => console.log("Error adding transaction:", error));
+    const newTransaction = {
+      date,
+      amount: parseFloat(amount),
+      notes
+    };
+
+    try {
+      await axios.post('http://127.0.0.1:5000/api/transactions', newTransaction);
+      setDate('');
+      setAmount('');
+      setNotes('');
+      alert('Transaction added successfully!');
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+      alert('Failed to add transaction. Please try again.');
+    }
   };
 
   return (
@@ -25,13 +33,28 @@ const TransactionForm = () => {
       <h2>Add Transaction</h2>
       <form onSubmit={handleSubmit} className="transaction-form">
         <label>Date:</label>
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+        />
 
         <label>Amount:</label>
-        <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} required />
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+        />
 
         <label>Notes:</label>
-        <input type="text" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Optional" />
+        <input
+          type="text"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Optional"
+        />
 
         <button type="submit" className="submit-button">Submit</button>
       </form>
