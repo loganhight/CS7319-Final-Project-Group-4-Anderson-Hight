@@ -1,3 +1,4 @@
+// src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Dashboard.css';
@@ -9,47 +10,64 @@ const Dashboard = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/api/summary')
+    // Fetch financial summary
+    axios.get('http://localhost:5000/api/summary')
       .then(response => {
-        setTotalIncome(response.data.total_income);
-        setTotalExpenses(response.data.total_expenses);
-        setNetBalance(response.data.net_balance);
+        const { total_income, total_expenses, net_balance } = response.data;
+        setTotalIncome(total_income);
+        setTotalExpenses(total_expenses);
+        setNetBalance(net_balance);
       })
-      .catch(error => console.log("Error fetching summary:", error));
+      .catch(error => console.error('Error fetching summary:', error));
 
-    axios.get('http://127.0.0.1:5000/api/transactions')
+    // Fetch recent transactions
+    axios.get('http://localhost:5000/api/transactions')
       .then(response => {
-        setRecentTransactions(response.data.slice(0, 3)); // Show the last 3 transactions
+        // Display the three most recent transactions
+        const transactions = response.data.slice(0, 3);
+        setRecentTransactions(transactions);
       })
-      .catch(error => console.log("Error fetching transactions:", error));
+      .catch(error => console.error('Error fetching transactions:', error));
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <h2>PFMA</h2>
-      <div className="summary-cards">
-        <div className="card">
-          <h3>Total Income</h3>
-          <p>${totalIncome}</p>
-        </div>
-        <div className="card">
-          <h3>Total Expenses</h3>
-          <p>${totalExpenses}</p>
-        </div>
-        <div className="card">
-          <h3>Net Balance</h3>
-          <p>${netBalance}</p>
-        </div>
+    <div className="dashboard-wrapper">
+      <div className="sidebar">
+        <h2>PFMA</h2>
+        <nav>
+          <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/add">Add Transaction</a></li>
+            <li><a href="/list">View Transactions</a></li>
+            <li><a href="/settings">Settings</a></li>
+          </ul>
+        </nav>
       </div>
-      <div className="recent-transactions">
-        <h3>Recent Transactions</h3>
-        <ul>
-          {recentTransactions.map(trans => (
-            <li key={trans.id}>
-              {trans.date} - ${trans.amount} ({trans.notes})
-            </li>
-          ))}
-        </ul>
+      <div className="dashboard-container">
+        <div className="summary-cards">
+          <div className="card">
+            <h3>Total Income</h3>
+            <p>${totalIncome}</p>
+          </div>
+          <div className="card">
+            <h3>Total Expenses</h3>
+            <p>${totalExpenses}</p>
+          </div>
+          <div className="card">
+            <h3>Net Balance</h3>
+            <p>${netBalance}</p>
+          </div>
+        </div>
+        <div className="recent-transactions">
+          <h3>Recent Transactions</h3>
+          <ul>
+            {recentTransactions.map(transaction => (
+              <li key={transaction.id}>
+                {transaction.date} - ${transaction.amount} ({transaction.notes})
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+// src/components/TransactionForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import './TransactionForm.css';
@@ -9,15 +10,12 @@ const TransactionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const newTransaction = {
-      date,
-      amount: parseFloat(amount),
-      notes
-    };
-
     try {
-      await axios.post('http://127.0.0.1:5000/api/transactions', newTransaction);
+      await axios.post('http://localhost:5000/api/transactions', {
+        date,
+        amount: parseFloat(amount),
+        notes
+      });
       setDate('');
       setAmount('');
       setNotes('');
@@ -30,34 +28,36 @@ const TransactionForm = () => {
 
   return (
     <div className="transaction-form-container">
-      <h2>Add Transaction</h2>
-      <form onSubmit={handleSubmit} className="transaction-form">
-        <label>Date:</label>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
+      <div className="transaction-form-card">
+        <h2>Add Transaction</h2>
+        <form onSubmit={handleSubmit} className="transaction-form">
+          <label>Date:</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
 
-        <label>Amount:</label>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-        />
+          <label>Amount:</label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
 
-        <label>Notes:</label>
-        <input
-          type="text"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Optional"
-        />
+          <label>Notes:</label>
+          <input
+            type="text"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Optional"
+          />
 
-        <button type="submit" className="submit-button">Submit</button>
-      </form>
+          <button type="submit" className="submit-button">Submit</button>
+        </form>
+      </div>
     </div>
   );
 };
