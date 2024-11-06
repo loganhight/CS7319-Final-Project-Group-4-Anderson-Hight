@@ -59,9 +59,9 @@ const Dashboard = () => {
       <div className="recent-transactions">
         <h3>Recent Transactions</h3>
         <ul>
-          {recentTransactions.map(trans => (
-            <li key={trans.id}>
-              {trans.date} - ${trans.amount} ({trans.notes})
+          {recentTransactions.map(transaction => (
+            <li key={transaction.id}>
+              {transaction.date} - ${transaction.amount} ({transaction.notes})
             </li>
           ))}
         </ul>

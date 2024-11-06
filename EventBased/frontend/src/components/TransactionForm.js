@@ -1,3 +1,4 @@
+// src/components/TransactionForm.js
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -10,22 +11,12 @@ const TransactionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate amount
-    if (isNaN(amount) || amount.trim() === '') {
-      alert('Please enter a valid number for the amount.');
-      return;
-    }
-
     try {
-      // Add the transaction to Firestore
       await addDoc(collection(db, 'transactions'), {
-        date, // Date in string format
-        amount: parseFloat(amount), // Convert amount to number
-        notes // Notes as a string
+        date,
+        amount: parseFloat(amount),
+        notes
       });
-
-      // Clear form fields
       setDate('');
       setAmount('');
       setNotes('');
@@ -38,34 +29,36 @@ const TransactionForm = () => {
 
   return (
     <div className="transaction-form-container">
-      <h2>Add Transaction</h2>
-      <form onSubmit={handleSubmit} className="transaction-form">
-        <label>Date:</label>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
+      <div className="transaction-form-card">
+        <h2>Add Transaction</h2>
+        <form onSubmit={handleSubmit} className="transaction-form">
+          <label>Date:</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
 
-        <label>Amount:</label>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-        />
+          <label>Amount:</label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
 
-        <label>Notes:</label>
-        <input
-          type="text"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Optional"
-        />
+          <label>Notes:</label>
+          <input
+            type="text"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Optional"
+          />
 
-        <button type="submit" className="submit-button">Submit</button>
-      </form>
+          <button type="submit" className="submit-button">Submit</button>
+        </form>
+      </div>
     </div>
   );
 };
