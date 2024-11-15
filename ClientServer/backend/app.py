@@ -9,8 +9,8 @@ CORS(app)
 # Configure MySQL connection
 db_config = {
     'host': 'localhost',           # Your MySQL server host (default: localhost)
-    'user': 'cs5330',       # Your MySQL username
-    'password': 'pw5330',   # Your MySQL password
+    'user': 'cs5330',              # Your MySQL username
+    'password': 'pw5330',          # Your MySQL password
     'database': 'pfma_db'          # The database name you created
 }
 
