@@ -5,9 +5,9 @@ import random
 # Database connection setup
 db = mysql.connector.connect(
     host="localhost",       # Replace with your MySQL host
-    user="cs5330",   # Replace with your MySQL username
-    password="pw5330",  # Replace with your MySQL password
-    database="pfma_db"   # Replace with your MySQL database name
+    user="cs5330",          # Replace with your MySQL username
+    password="pw5330",      # Replace with your MySQL password
+    database="pfma_db"      # Replace with your MySQL database name
 )
 
 cursor = db.cursor()
