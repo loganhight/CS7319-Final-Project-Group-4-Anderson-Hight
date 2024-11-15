@@ -39,7 +39,6 @@ const Dashboard = () => {
             <li><a href="/">Dashboard</a></li>
             <li><a href="/add">Add Transaction</a></li>
             <li><a href="/list">View Transactions</a></li>
-            <li><a href="/settings">Settings</a></li>
           </ul>
         </nav>
       </div>

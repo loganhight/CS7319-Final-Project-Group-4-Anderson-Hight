@@ -24,20 +24,40 @@ def get_db_connection():
     )
     return connection
 
-# Route to get all transactions
+# Get all transactions
 @app.route('/api/transactions', methods=['GET'])
 def get_transactions():
     try:
-        connection = get_db_connection()
-        cursor = connection.cursor(dictionary=True)
+        db = get_db_connection()
+        cursor = db.cursor(dictionary=True)  # dictionary=True for JSON-like response
         cursor.execute("SELECT * FROM transactions")
         transactions = cursor.fetchall()
+        return jsonify(transactions), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
         cursor.close()
-        connection.close()
-        return jsonify(transactions)
-    except Error as e:
-        print(f"Error: {e}")
-        return jsonify({"error": "Failed to fetch transactions"}), 500
+        db.close()
+    
+@app.route('/api/transactions/<int:transaction_id>', methods=['PUT'])
+def update_transaction(transaction_id):
+    data = request.json
+    try:
+        db = get_db_connection()
+        cursor = db.cursor()
+        query = """
+            UPDATE transactions
+            SET date = %s, amount = %s, notes = %s
+            WHERE id = %s
+        """
+        cursor.execute(query, (data['date'], data['amount'], data['notes'], transaction_id))
+        db.commit()
+        return jsonify({"message": "Transaction updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
 
 # Route to add a new transaction
 @app.route('/api/transactions', methods=['POST'])

@@ -30,9 +30,13 @@ const Dashboard = () => {
         }
       });
 
+      income = parseFloat(income).toFixed(2);
+      expenses = Math.abs(parseFloat(expenses)).toFixed(2);
+      let netBalance = (parseFloat(income) - parseFloat(expenses)).toFixed(2);
+
       setTotalIncome(income);
-      setTotalExpenses(Math.abs(expenses));
-      setNetBalance(income + expenses);
+      setTotalExpenses(expenses);
+      setNetBalance(netBalance);
       setRecentTransactions(transactions.slice(0, 3));
     };
 
@@ -41,7 +45,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h2>PFMA</h2>
+      <h2>Personal Finance Management Application</h2>
       <div className="summary-cards">
         <div className="card">
           <h3>Total Income</h3>

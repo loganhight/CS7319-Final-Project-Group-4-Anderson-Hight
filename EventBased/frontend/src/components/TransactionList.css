@@ -1,60 +1,129 @@
-/* src/components/TransactionForm.css */
-.transaction-form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f4f4f4;
+/* General Styles for the Transaction List */
+.transaction-list {
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  width: 90%;
 }
 
-.transaction-form-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.transaction-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-input {
-  padding: 10px;
+.transaction-list h2 {
   margin-bottom: 15px;
+  font-size: 24px;
+  text-align: center;
+  color: #333;
+}
+
+/* Sort Dropdown Container */
+.sort-container {
+  margin-bottom: 15px;
+  text-align: right;
+}
+
+.sort-container label {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.sort-container select {
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Table Styles */
+.transaction-list table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-list th, .transaction-list td {
   border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.transaction-list th {
+  background-color: #f4f4f4;
+  color: #555;
+  font-weight: bold;
+}
+
+.transaction-list tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.transaction-list tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Input Styles for Editable Rows */
+.transaction-list input {
+  width: 95%;
+  padding: 6px 8px;
+  margin: 0;
+  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  width: 100%;
+  box-sizing: border-box;
 }
 
-.submit-button {
-  background-color: #28a745;
-  color: white;
+/* Button Styles */
+.transaction-list button {
+  padding: 6px 12px;
+  margin: 0 5px;
   border: none;
-  padding: 10px;
   border-radius: 4px;
-  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 14px;
+  color: #fff;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.submit-button:hover {
+.transaction-list button:nth-child(1) {
+  background-color: #007BFF; /* Blue */
+}
+
+.transaction-list button:nth-child(1):hover {
+  background-color: #0056b3;
+}
+
+.transaction-list button:nth-child(2) {
+  background-color: #dc3545; /* Red */
+}
+
+.transaction-list button:nth-child(2):hover {
+  background-color: #c82333;
+}
+
+.transaction-list button:nth-child(3) {
+  background-color: #28a745; /* Green */
+}
+
+.transaction-list button:nth-child(3):hover {
   background-color: #218838;
+}
+
+.transaction-list button:nth-child(4) {
+  background-color: #6c757d; /* Gray */
+}
+
+.transaction-list button:nth-child(4):hover {
+  background-color: #5a6268;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .transaction-list table {
+      font-size: 14px;
+  }
+
+  .transaction-list button {
+      padding: 5px 8px;
+      font-size: 12px;
+  }
+
+  .transaction-list input {
+      font-size: 12px;
+  }
 }
